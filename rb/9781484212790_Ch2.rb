@@ -25,16 +25,7 @@ end
 
 # ----
 
-# irb(main):001:0> class Person
-# irb(main):002:?>   attr_accessor :name, :age, :gender
-# irb(main):003:?>   end
-# => nil
-# irb(main):004:0>
-
-# ----
-
 person_instance = Person.new
-# => #<Person:0x007fbb0c625f88>
 
 # ----
 
@@ -94,16 +85,6 @@ end
 
 # ----
 
-# irb(main):001:0> snake = Snake.new
-# irb(main):002:0> snake.name = "Sammy"
-# irb(main):003:0> snake.length = 500
-# irb(main):004:0> lassie = Dog.new
-# irb(main):005:0> lassie.name = "Lassie"
-# irb(main):006:0> lassie.age = 20
-# irb(main):007:0> lassie.length = 10
-
-# ----
-
 class Dog < Pet
   def bark
     puts "Woof!"
@@ -112,8 +93,8 @@ end
 
 # ----
 
-irb(main):0> a_dog = Dog.new
-irb(main):0> a_dog.bark
+a_dog = Dog.new
+a_dog.bark
 
 # ----
 

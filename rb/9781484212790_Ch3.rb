@@ -64,8 +64,6 @@ x += 1
 puts x
 x += 1
 puts x
-# ...
-# ...
 
 # ----
 
@@ -180,11 +178,11 @@ puts "y" > "x"
 
 # ----
 
-puts “x”.ord
+puts "x".ord
 
 # ----
 
-puts “A”.ord
+puts "A".ord
 
 # ----
 
@@ -431,7 +429,7 @@ p x.reverse
 
 # ----
 
-dictionary = { 'cat' => 'feline animal', 'dog' => 'canine animal' }
+dictionary = { cat: "feline animal", dog: "canine animal" }
 
 # ----
 
@@ -439,12 +437,12 @@ puts dictionary.size
 
 # ----
 
-puts dictionary['cat']
+puts dictionary[:cat]
 
 # ----
 
-dictionary['cat'] = "fluffy animal"
-puts dictionary['cat']
+dictionary[:cat] = "fluffy animal"
+puts dictionary[:cat]
 
 # ----
 
@@ -453,45 +451,45 @@ x.each { |key, value| puts "#{key} equals #{value}" }
 
 # ----
 
-x = { "a" => 1, "b" => 2, "c" => 3 }
+x = { a: 1, b: 2, c: 3 }
 p x.keys
 
 # ----
 
-x = { "a" => 1, "b" => 2 }
-x.delete("a")
+x = { a: 1, b: 2 }
+x.delete(:a)
 p x
 
 # ----
 
-x = { "a" => 100, "b" => 20 }
+x = { a: 100, b: 20 }
 x.delete_if { |key, value| value < 25 }
 p x
 
 # ----
 
 people = {
- 'fred' => {
- 'name' => 'Fred Elliott',
- 'age' => 63,
- 'gender' => 'male',
- 'favorite painters' => ['Monet', 'Constable', 'Da Vinci']
- },
- 'janet' => {
- 'name' => 'Janet S Porter',
- 'age' => 55,
- 'gender' => 'female'
- }
+  fred: {
+    name: "Fred Elliott",
+    age: 63,
+    gender: "male",
+    favorite_painters: ["Monet", "Constable", "Da Vinci"]
+  },
+  janet: {
+    name: "Janet S Porter",
+    age: 55,
+    gender: "female"
+  }
 }
 
-puts people['fred']['age']
-puts people['janet']['gender']
-p people['janet']
+puts people[:fred][:age]
+puts people[:janet][:gender]
+puts people[:janet]
 
 # ----
 
-puts people['fred']['favorite painters'].length
-puts people['fred']['favorite painters'].join(", ")
+puts people[:fred][:favorite_painters].length
+puts people[:fred][:favorite_painters].join(", ")
 
 # ----
 
@@ -547,10 +545,6 @@ end
 age = 10
 type = age < 18 ? "child" : "adult"
 puts "You are a " + type
-
-# ----
-
-# <condition> ? <result if condition is true> : <result if condition is false>
 
 # ----
 
@@ -678,7 +672,7 @@ each_vowel { |vowel| puts vowel }
 
 # ----
 
-print_parameter_to_screen = lambda { |x| puts x }
+print_parameter_to_screen = Proc.new { |x| puts x }
 print_parameter_to_screen.call(100)
 
 # ----
@@ -693,7 +687,7 @@ puts Time.now + 86400
 
 # ----
 
-class Fixnum
+class Integer
   def seconds
     self
   end
@@ -715,7 +709,7 @@ puts Time.now - 7.days
 
 # ----
 
-year = 2016
+year = 2020
 month = 1
 day = 16
 hour = 12
@@ -734,29 +728,13 @@ Time.utc(year, month, day, hour, min, sec, msec)
 
 # ----
 
-Time.gm(2015, 05).to_i
+Time.gm(2020, 02).to_i
 
 # ----
 
-epoch_time = Time.gm(2015, 5).to_i
+epoch_time = Time.gm(2020, 2).to_i
 t = Time.at(epoch_time)
 puts t.year, t.month, t.day
-
-# ----
-
-rice_on_square = 1
-64.times do |square|
-  puts "On square #{square + 1} are #{rice_on_square} grain(s)"
-  rice_on_square *= 2
-end
-
-# ----
-
-puts 4611686018427387903.class
-
-# ----
-
-puts 4611686018427387904.class
 
 # ----
 
@@ -806,12 +784,12 @@ puts "PANIC!" if current_situation == "bad"
 
 # ----
 
-s = { :key => 'value' }
+s = { key: "value" }
 
 # ----
 
-person1 = { :name => "Fred", :age => 20, :gender => :male }
-person2 = { :name => "Laura", :age => 23, :gender => :female }
+person1 = { name: "Fred", age: 20, gender: :male }
+person2 = { name: "Laura", age: 23, gender: :female }
 
 # ----
 

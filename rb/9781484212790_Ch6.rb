@@ -178,17 +178,10 @@ class Square
   def test_method
     puts "Hello from an instance of class Square!"
   end
+end
 
 Square.test_method
 Square.new.test_method
-
-# ----
-
-class Square
-  def self.test_method
-    puts "Hello from the Square class!"
-  end
-end
 
 # ----
 
@@ -475,7 +468,7 @@ end
 
 puts 1000.to_s
 puts [1,2,3].to_s
-puts ({ :name => 'Fred', :age => 10 }).to_s
+puts ({ name: 'Fred', age:10 }).to_s
 
 # ----
 
@@ -506,10 +499,10 @@ end
 
 a = Drawing.give_me_a_circle
 puts a.what_am_i
-a = Drawing::Circle.new
-puts a.what_am_i
-a = Circle.new
-puts a.what_am_i
+b = Drawing::Circle.new
+puts b.what_am_i
+c = Circle.new
+puts c.what_am_i
 
 # ----
 
@@ -884,8 +877,8 @@ end
 
 # ----
 
-my_dungeon.add_room(:largecave, "Large Cave", "a large cavernous cave", { :west => :smallcave })
-my_dungeon.add_room(:smallcave, "Small Cave", "a small, claustrophobic cave", { :east => :largecave })
+my_dungeon.add_room(:largecave, "Large Cave", "a large cavernous cave", { west: :smallcave })
+my_dungeon.add_room(:smallcave, "Small Cave", "a small, claustrophobic cave", { east: :largecave })
 
 # ----
 
@@ -1005,7 +998,7 @@ end
 my_dungeon.add_room(:largecave,
                     "Large Cave",
                     "a large cavernous cave",
-                    { :west => :smallcave })
+                    { west: :smallcave })
 
 # ----
 
