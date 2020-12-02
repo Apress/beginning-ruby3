@@ -1,6 +1,6 @@
 # Apress Source Code
 
-This repository accompanies [*Beginning Ruby 3*](https://www.apress.com/gp/book/9781484263235) by Carleton DiLeo and Peter Cooper (Apress, 2020).
+This repository accompanies [*Beginning Ruby 3*](http://www.apress.com/9781484263235) by Carleton DiLeo and Peter Cooper (Apress, 2021).
 
 ![Cover image](9781484263235.jpg)
 
