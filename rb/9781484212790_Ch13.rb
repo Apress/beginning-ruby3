@@ -1,6 +1,6 @@
 # ----
 
-class CreateEntries < ActiveRecord::Migration[5.0]
+class CreateEntries < ActiveRecord::Migration[6.0]
   def change
     create_table :entries do |t|
       t.string :title
@@ -40,7 +40,6 @@ class EntriesController < ApplicationController
   # POST /entries.json
   def create
     @entry = Entry.new(entry_params)
-
     respond_to do |format|
       if @entry.save
         format.html { redirect_to @entry, notice: 'Entry was successfully created.' }
@@ -77,15 +76,15 @@ class EntriesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_entry
-      @entry = Entry.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_entry
+    @entry = Entry.find(params[:id])
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def entry_params
-      params.require(:entry).permit(:title, :content)
-    end
+  # Only allow a list of trusted parameters through.
+  def entry_params
+    params.require(:entry).permit(:title, :content)
+  end
 end
 
 # ----
@@ -173,18 +172,11 @@ end
 # ----
 
 class ApplicationController < ActionController::Base
-  # Prevent CSRF attacks by raising an exception.
-  # For APIs, you may want to use :null_session instead.
-  protect_from_forgery with: :exception
 end
 
 # ----
 
 class ApplicationController < ActionController::Base
-  # Prevent CSRF attacks by raising an exception.
-  # For APIs, you may want to use :null_session instead.
-  protect_from_forgery with: :exception
-
   before_filter :count_requests_in_session
 
   def count_requests_in_session
@@ -211,10 +203,10 @@ end
 #   <head>
 #     <title>Mydiary</title>
 #     <%= csrf_meta_tags %>
-#     <%= action_cable_meta_tag %>
+#     <%= csp_meta_tag %>
 #
-#     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => 'reload' %>
-#     <%= javascript_include_tag 'application', 'data-turbolinks-track' => 'reload' %>
+#     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+#     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
 #   </head>
 #
 #   <body>
@@ -224,11 +216,11 @@ end
 
 # ----
 
-render :layout => false
+render layout: false
 
 # ----
 
-render :layout => 'some_other_layout'
+render layout: 'some_other_layout'
 
 # ----
 
@@ -282,10 +274,10 @@ end
 
 before do
   @people = [
-             { :name => "Beatrice", :age => 20 },
-             { :name => "Eugenie", :age => 18 },
-             { :name => "Louise", :age => 6 }
-            ]
+    { name: "Beatrice", age: 20 },
+    { name: "Eugenie", age: 18 },
+    { name: "Louise", age: 6 }
+  ]
 end
 
 get '/' do
@@ -313,10 +305,10 @@ __END__
 
 before do
   @people = [
-             { :name => "Beatrice", :age => 20 },
-             { :name => "Eugenie", :age => 18 },
-             { :name => "Louise", :age => 6 }
-            ]
+    { name: "Beatrice", age: 20 },
+    { name: "Eugenie", age: 18 },
+    { name: "Louise", age: 6 }
+  ]
 end
 
 get '/' do
@@ -340,11 +332,11 @@ __END__
 
 # ----
 
-erb :index, :layout => :anotherlayout
+erb :index, layout: :anotherlayout
 
 # ----
 
-erb :index, :layout => false
+erb :index, layout: false
 
 # ----
 

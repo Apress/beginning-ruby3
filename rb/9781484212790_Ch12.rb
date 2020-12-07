@@ -33,13 +33,25 @@ even works over multiple lines}.sentences[1].words[3]
 
 # ----
 
-def self.best_sentence(sentences, desired_words)
-  ranked_sentences = sentences.sort_by do |s|
-    s.words.length  (s.downcase.words  desired_words).length
-  end
-
-  ranked_sentences.last
+hot_words = %w{test ruby great}
+my_string = "This is a test. Dull sentence here. Ruby is great. So is
+cake."
+t = my_string.sentences.find_all do |s|
+  s.downcase.words.any? { |word| hot_words.include?(word) }
 end
+p t.to_a
+
+# ----
+
+class WordPlay
+  def self.best_sentence(sentences, desired_words)
+    ranked_sentences = sentences.sort_by do |s|
+      s.words.length - (s.downcase.words - desired_words).length
+    end
+    ranked_sentences.last
+  end
+end
+puts WordPlay.best_sentence(my_string.sentences, hot_words)
 
 # ----
 
@@ -287,7 +299,7 @@ end
 
 require_relative 'bot'
 
-bot = Bot.new(:name => "Botty", :data_file => "botty.bot")
+bot = Bot.new(name: "Botty", data_file: "botty.bot")
 
 puts bot.greeting
 while input = gets and input.chomp != 'goodbye'
@@ -303,26 +315,24 @@ bot_data = {
     ["youre", "you're"],
     ["love", "like"]
   ],
-
   :responses => {
-    :default   => [
-                    "I don't understand.",
-                    "What?",
-                    "Huh?"
-                  ],
-    :greeting  => ["Hi. I'm [name]. Want to chat?"],
-    :farewell  => ["Good bye!"],
-    'hello'    => [
-                    "How's it going?",
-                    "How do you do?"
-                  ],
+    :default => [
+      "I don't understand.",
+      "What?",
+      "Huh?"
+    ],
+    :greeting => ["Hi. I'm [name]. Want to chat?"],
+    :farewell => ["Good bye!"],
+    'hello' => [
+      "How's it going?",
+      "How do you do?"
+    ],
     'i like *' => [
-                    "Why do you like *?",
-                    "Wow! I like * too!"
-                  ]
+      "Why do you like *?",
+      "Wow! I like * too!"
+    ]
   }
 }
-
 # ----
 
 require 'yaml'
@@ -334,21 +344,21 @@ bot_data = {
     ["love", "like"]
   ],
   :responses => {
-    :default       => [
-                        "I don't understand.",
-                        "What?",
-                        "Huh?"
-                      ],
-    :greeting      => ["Hi. I'm [name]. Want to chat?"],
-    :farewell      => ["Good bye!"],
-    'hello'        => [
-                        "How's it going?",
-                        "How do you do?"
-                      ],
-    'i like *'     => [
-                        "Why do you like *?",
-                        "Wow! I like * too!"
-                      ]
+    :default => [
+      "I don't understand.",
+      "What?",
+      "Huh?"
+    ],
+    :greeting => ["Hi. I'm [name]. Want to chat?"],
+    :farewell => ["Good bye!"],
+    'hello' => [
+      "How's it going?",
+      "How do you do?"
+    ],
+    'i like *' => [
+      "Why do you like *?",
+      "Wow! I like * too!"
+    ]
   }
 }
 
@@ -506,16 +516,15 @@ end
 # ----
 
 'i like *' => [
-                "Why do you like *?",
-                "Wow! I like * too!"
-                ]
-
+  "Why do you like *?",
+  "Wow! I like * too!"
+]
 # ----
 
 def possible_responses(sentence)
   responses = []
 
-# Find all patterns to try to match against
+  # Find all patterns to try to match against
   @data[:responses].keys.each do |pattern|
     next unless pattern.is_a?(String)
 
@@ -541,7 +550,6 @@ def possible_responses(sentence)
       end
     end
   end
-
   # If there were no matches, add the default ones
   responses << @data[:responses][:default] if responses.empty?
 
@@ -566,67 +574,67 @@ bot_data = {
     ["mom", "family"]
   ],
   :responses => {
-    :default     => [
-                    "I don't understand.",
-                    "What?",
-                    "Huh?",
-                    "Tell me about something else.",
-                    "I'm tired of this. Change the subject."
-                    ],
-    :greeting    => [
-                    "Hi. I'm [name]. Want to chat?",
-                    "What's on your mind today?",
-                    "Hi. What would you like to talk about?"
-                    ],
-    :farewell    => ["Good bye!", "Au revoir!"],
-    'hello'      => [
-                    "How's it going?",
-                    "How do you do?",
-                    "Enough of the pleasantries!"
-                    ],
-    'sorry'      => ["There's no need to apologize."],
-    'different'  => [
-                    "How is it different?",
-                    "What has changed?"
-                    ],
+    :default => [
+      "I don't understand.",
+      "What?",
+      "Huh?",
+      "Tell me about something else.",
+      "I'm tired of this. Change the subject."
+    ],
+    :greeting => [
+      "Hi. I'm [name]. Want to chat?",
+      "What's on your mind today?",
+      "Hi. What would you like to talk about?"
+    ],
+    :farewell => ["Good bye!", "Au revoir!"],
+    'hello' => [
+      "How's it going?",
+      "How do you do?",
+      "Enough of the pleasantries!"
+    ],
+    'sorry' => ["There's no need to apologize."],
+    'different' => [
+      "How is it different?",
+      "What has changed?"
+    ],
     'everyone *' => ["You think everyone *?"],
     'do not know'=> ["Are you always so indecisive?"],
     'yes' => [
-                    "At least you're positive about something!",
-                    "Great."
-                    ],
-    'family'     => ["Tell me about your family"],
-    'you are *'  => [
-                    "What makes you think I am *?",
-                    "Are you so sure I am *?"
-                    ],
-    'i am *'     => [
-                    "Is it normal for you to be *?",
-                    "Do you like being *?"
-                    ],
+      "At least you're positive about something!",
+      "Great."
+    ],
+    'family' => ["Tell me about your family"],
+    'you are *' => [
+      "What makes you think I am *?",
+      "Are you so sure I am *?"
+    ],
+    'i am *' => [
+      "Is it normal for you to be *?",
+      "Do you like being *?"
+    ],
     'i do not *' => ["Why don't you *?"],
-    'what'       => ["Why do you ask?", "Why?", "I don't know. Do you?"],
-    'no'         => [
-                    "Really?",
-                    "Fair enough."
-                    ],
+    'what' => ["Why do you ask?", "Why?", "I don't know. Do you?"],
+    'no' => [
+      "Really?",
+      "Fair enough."
+    ],
     'why does *' => [
-                    "I don't know why *",
-                    "Do you already know the answer?"
-                    ],
+      "I don't know why *",
+      "Do you already know the answer?"
+    ],
     'why can\'t i *' => ["Do you want to *?"],
     'why can\'t you *' => ["Do you want me to *?"],
-    'hates *'   => [
-                   "Why do you think they hate *?"
-                   ],
-    'hate *'    => [
-                   "Why don't you like *?",
-                   "Why the dislike of *?"
-                   ],
-    'i like *'  => [
-                   "Why do you like *?",
-                   "Wow! I like * too!"
-                   ]
+    'hates *' => [
+      "Why do you think they hate *?"
+    ],
+    'hate *' => [
+      "Why don't you like *?",
+      "Why the dislike of *?"
+    ],
+    'i like *' => [
+      "Why do you like *?",
+      "Wow! I like * too!"
+    ]
   }
 }
 # Show the user the YAML data for the bot structure
@@ -641,7 +649,7 @@ f.close
 
 require_relative 'bot'
 
-bot = Bot.new(:name => 'Fred', :data_file => 'fred.bot')
+bot = Bot.new(name: 'Fred', data_file: 'fred.bot')
 
 puts bot.greeting
 
@@ -711,7 +719,7 @@ class Bot
   def perform_substitutions(input)
     @data[:presubs].each { |s| input.gsub!(s[0], s[1]) }
     input
-end
+  end
 
   # Using the single word keys from :responses, we search for the
   # sentence that uses the most of them, as it's likely to be the
@@ -730,13 +738,13 @@ end
   def possible_responses(sentence)
     responses = []
 
-  # Find all patterns to try to match against
-  @data[:responses].keys.each do |pattern|
-    next unless pattern.is_a?(String)
+    # Find all patterns to try to match against
+    @data[:responses].keys.each do |pattern|
+      next unless pattern.is_a?(String)
 
-    # For each pattern, see if the supplied sentence contains
-    # a match. Remove substitution symbols (*) before checking.
-    # Push all responses to the responses array.
+      # For each pattern, see if the supplied sentence contains
+      # a match. Remove substitution symbols (*) before checking.
+      # Push all responses to the responses array.
       if sentence.match('\b' + pattern.gsub(/\*/, '') + '\b')
         # If the pattern contains substitution placeholders,
         # perform the substitutions
@@ -770,7 +778,7 @@ end
 
 require_relative 'bot'
 
-bot = Bot.new(:name => ARGV[0], :data_file => ARGV[1])
+bot = Bot.new(name: ARGV[0], data_file: ARGV[1])
 
 puts bot.greeting
 
@@ -784,8 +792,8 @@ puts bot.farewell
 
 require_relative 'bot'
 
-bot = Bot.new(:name => ARGV[0], :data_file => ARGV[1])
-user_lines = File.readlines(ARGV[2], 'r')
+bot = Bot.new(name: ARGV[0], data_file: ARGV[1])
+user_lines = File.readlines(ARGV[2])
 
 puts "#{bot.name} says: " + bot.greeting
 
@@ -840,7 +848,7 @@ end
 # Create an HTTP server on port 1234 of the local machine
 # accessible via http://localhost:1234/ or http://127.0.0.1:1234/
 server = WEBrick::HTTPServer.new( :Port => 1234 )
-$bot = Bot.new(:name => "Fred", :data_file => "fred.bot")
+$bot = Bot.new(name: "Fred", data_file: "fred.bot")
 server.mount "/", BotServlet
 trap("INT"){ server.shutdown }
 server.start
@@ -874,7 +882,7 @@ cgi = CGI.new
 params = cgi.params
 line = params['line'] && params['line'].first
 
-bot = Bot.new(:name => "Fred", :data_file => "fred.bot")
+bot = Bot.new(name: "Fred", data_file: "fred.bot")
 
 # If the user supplies some text, respond to it
 if line && line.length > 1
@@ -893,8 +901,8 @@ puts html.sub(/\%RESPONSE\%/, bot_text)
 
 require_relative 'bot'
 
-fred = Bot.new(:name => 'Fred', :data_file => 'fred.bot')
-chris = Bot.new(:name => 'Chris', :data_file => 'fred.bot')
+fred = Bot.new(name: 'Fred', data_file: 'fred.bot')
+chris = Bot.new(name: 'Chris', data_file: 'fred.bot')
 
 r = fred.greeting
 10.times do

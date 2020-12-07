@@ -44,7 +44,7 @@ end
 person = Person.new
 add_accessor_to_person :name
 add_accessor_to_person :gender
-person.name = "Peter Cooper"
+person.name = "Carleton DiLeo"
 person.gender = "male"
 puts "#{person.name} is #{person.gender}"
 
@@ -70,7 +70,7 @@ end
 person = Person.new
 Person.add_accessor :name
 Person.add_accessor :gender
-person.name = "Peter Cooper"
+person.name = "Carleton DiLeo"
 person.gender = "male"
 puts "#{person.name} is #{person.gender}"
 
@@ -137,8 +137,15 @@ end
 
 # ----
 
-x = system("date")
-x = `date`
+# OS X or Linux
+x = system("ls")
+x = `ls`
+
+# ----
+
+# Windows
+x = system("dir")
+x = `dir`
 
 # ----
 
@@ -180,102 +187,6 @@ handle.close_write
 while line = handle.gets
   puts line
 end
-
-# ----
-
-while x = gets
-  puts "=> #{eval(x)}"
-end
-
-# ----
-
-x = "Hello, world!"
-puts x.tainted?
-
-y = [x, x, x]
-puts y.tainted?
-
-z = 20 + 50
-puts z.tainted?
-
-a = File.open("somefile").readlines.first
-puts a.tainted?
-
-b = [a]
-puts b.tainted?
-
-# ----
-
-while x = gets
-  next if x.tainted?
-  puts "=> #{eval(x)}"
-end
-
-# ----
-
-def code_is_safe?(code)
-  code =~ /[`;*-]/ ? false : true
-end
-
-while x = gets
-  x.untaint if code_is_safe?(x)
-  next if x.tainted?
-  puts "=> #{eval(x)}"
-end
-
-# ----
-
-require 'Win32API'
-
-title = "My Application"
-text = "Hello, world!"
-
-Win32API.new('user32', 'MessageBox', %w{L P P L}, 'I').call(0, text, title, 0)
-
-# ----
-
-require 'Win32API'
-
-title = "My Application"
-text = "Hello, world!"
-
-dialog = Win32API.new('user32', 'MessageBox', 'LPPL', 'I')
-result = dialog.call(0, text, title, 1)
-
-case result
-  when 1
-    puts "Clicked OK"
-  when 2
-    puts "Clicked Cancel"
-  else
-    puts "Clicked something else!"
-end
-
-# ----
-
-require 'win32ole'
-
-web_browser = WIN32OLE.new('InternetExplorer.Application')
-web_browser.visible = true
-web_browser.navigate('http://www.rubyinside.com/')
-
-# ----
-
-require 'win32ole'
-
-web_browser = WIN32OLE.new('InternetExplorer.Application')
-web_browser.visible = true
-web_browser.navigate('http://www.rubyinside.com/')
-
-while web_browser.ReadyState != 4
-  sleep 1
-end
-
-puts "Page is loaded"
-
-# ----
-
-puts web_browser.document.getElementById('header').innerHtml.length
 
 # ----
 
@@ -356,29 +267,12 @@ puts sg.resume
 
 # ----
 
-gem install RubyInline
-
-# ----
-
-class Fixnum
-  def factorial
-    (1..self).inject { |a, b| a * b }
-  end
+non_blocking = Fiber.new(blocking: false) do
+  puts "Blocking Fiber? #{Fiber.current.blocking?}"
+  # Will not block
+  sleep 2
 end
-
-puts 8.factorial
-
-# ----
-
-require 'benchmark'
-
-Benchmark.bm do |bm|
-  bm.report('ruby:') do
-    100000.times do
-      8.factorial
-    end
-  end
-end
+3.times { puts non_blocking.resume }
 
 # ----
 

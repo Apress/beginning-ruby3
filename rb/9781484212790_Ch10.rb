@@ -101,10 +101,9 @@ Gem::Specification.new do |s|
   s.platform = Gem::Platform::RUBY
   s.files = Dir.glob("**/**/**")
   s.test_files = Dir.glob("test/*_test.rb")
-  s.author = "Your Name"
+  s.authors = ["Your Name"]
   s.email = "your-email-address@email.com"
-  s.has_rdoc = false
-s.required_ruby_version = '>= 1.8.2'
+  s.required_ruby_version = '>= 2.0.0'
 end
 
 # ----
@@ -129,7 +128,7 @@ s.test_files = Dir.glob("test/*_test.rb")
 
 # ----
 
-s.required_ruby_version = '>= 1.8.2'
+s.required_ruby_version = '>= 2.0.0'
 
 # ----
 
@@ -146,27 +145,31 @@ s.required_ruby_version = '>= 1.8.2'
 # ----
 
 # coding: utf-8
-lib = File.expand_path('../lib', __FILE__)
-$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'string_extend/version'
 
+require_relative 'lib/string_extend/version'
 Gem::Specification.new do |spec|
-  spec.name          = "string_extend"
-  spec.version       = StringExtend::VERSION
-  spec.authors       = ["Peter Cooper"]
-  spec.email         = ["git@peterc.org"]
-  spec.summary       = %q{TODO: Write a short summary. Required.}
-  spec.description   = %q{TODO: Write a longer description. Optional.}
-  spec.homepage      = ""
-  spec.license       = "MIT"
-
-  spec.files         = `git ls-files -z`.split("\x0")
-  spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
-  spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
+  spec.name = "string_extend"
+  spec.version = StringExtend::VERSION
+  spec.authors = ["Carleton DiLeo"]
+  spec.email = ["example@email.com"]
+  spec.summary = %q{TODO: Write a short summary, because RubyGems requires one.}
+  spec.description = %q{TODO: Write a longer description or delete this line.}
+  spec.homepage = "TODO: Put your gem's website or public repo URL here."
+  spec.license = "MIT"
+  spec.required_ruby_version = Gem::Requirement.new(">= 2.3.0")
+  spec.metadata["allowed_push_host"] = "TODO: Set to 'http://mygemserver.com'"
+  spec.metadata["homepage_uri"] = spec.homepage
+  spec.metadata["source_code_uri"] = "TODO: Put your gem's public repo URL here."
+  spec.metadata["changelog_uri"] = "TODO: Put your gem's CHANGELOG.md URL here."
+  # Specify which files should be added to the gem when it is released.
+  # The `git ls-files -z` loads the files in the RubyGem that have been
+  added into git.
+  spec.files = Dir.chdir(File.expand_path('..', __FILE__)) do
+    ` git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
+  end
+  spec.bindir = "exe"
+  spec.executables = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
-
-  spec.add_development_dependency "bundler", "~> 1.7"
-  spec.add_development_dependency "rake", "~> 10.0"
 end
 
 # ----
@@ -176,6 +179,10 @@ end
 # ----
 
 # gem push your_gems_filename-0.0.1.gem
+
+# ----
+
+# rake release
 
 # ----
 

@@ -78,112 +78,6 @@ end
 
 # ----
 
-#!/usr/bin/ruby
-
-require 'cgi'
-
-cgi = CGI.new
-
-puts cgi.header
-puts "<html><body>This is a test</body></html>"
-
-# ----
-
-#!/usr/bin/ruby
-
-require 'cgi'
-cgi = CGI.new
-
-cgi.out do
-  "<html><body>This is a test</body></html>"
-end
-
-# ----
-
-#!/usr/bin/ruby
-
-require 'cgi'
-cgi = CGI.new
-
-text = cgi['text']
-puts cgi.header
-puts "<html><body>#{text.reverse}</body></html>"
-
-# ----
-
-#!/usr/bin/ruby
-
-require 'cgi'
-cgi = CGI.new
-
-from = cgi['from'].to_i
-to = cgi['to'].to_i
-
-number = rand(to - from + 1) + from
-
-puts cgi.header
-puts "<html><body>#{number}</body></html>"
-
-# ----
-
-# <form method="POST" action="/test.cgi">
-# For a number between <input type="text" name="from" value="" /> and
-# <input type="text" name="to" value="" /> <input type="submit"
-# value="Click here!" /></form>
-
-# ----
-
-#!/usr/bin/ruby
-
-require 'cgi'
-cgi = CGI.new
-
-cookie = cgi.cookies['count']
-# If there is no cookie, create a new one
-if cookie.empty?
-  count = 1
-  cookie = CGI::Cookie.new('count', count.to_s)
-else
-  # If there is a cookie, retrieve its value (note that cookie.value results
-  # in an Array)
-  count = cookie.value.first
-
-  # Now send back an increased amount for the cookie to store
-  cookie.value = (count.to_i + 1).to_s
-end
-
-cgi.out("cookie" => [cookie]) do
-  "<html><body>You have loaded this page #{count} times</body></html>"
-end
-
-# ----
-
-#!/usr/bin/ruby
-require 'cgi'
-require 'cgi/session'
-require 'cgi/session/pstore'
-
-cgi = CGI.new
-session = CGI::Session.new(cgi,
-                           :session_key => 'count_app',
-                           :database_manager => CGI::Session::PStore,
-                           :prefix => 'session_id'
-                           )
-
-if session['count'] && session['count'].to_i > 0
-  session['count'] = (session['count'].to_i + 1).to_s
-else
-  session['count'] = 1
-end
-
-cgi.out do
-  "<html><body>You have loaded this page #{session['count']} times</body></html>"
-end
-
-session.close
-
-# ----
-
 require 'chronic'
 puts Chronic.parse('last tuesday 5am')
 
@@ -213,13 +107,13 @@ puts Chronic.parse('2003-11-10 01:02')
 
 # ----
 
-require 'digest/sha1'
-puts Digest::SHA1.hexdigest('password')
+require 'digest/sha2'
+puts Digest::SHA2.hexdigest('password')
 
 # ----
 
-require 'digest/sha1'
-puts Digest::SHA1.hexdigest('test' * 1000)
+require 'digest/sha2'
+puts Digest::SHA2.hexdigest('test' * 1000)
 
 # ----
 
@@ -228,12 +122,12 @@ puts Digest::MD5.hexdigest('test' * 1000)
 
 # ----
 
-require 'digest/sha1'
+require 'digest/sha2'
 
 puts "Enter the password to use this program:"
 password = gets
-if Digest::SHA1.hexdigest(password) == ➥
-                         '24b63c0840ec7e58e5ab50d0d4ca243d1729eb65'
+if Digest::SHA2.hexdigest(password) ==
+    '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8'
   puts "You've passed!"
 else
   puts "Wrong!"
@@ -242,20 +136,20 @@ end
 
 # ----
 
-Digest::SHA1.digest('test' * 1000)
+Digest::SHA2.digest('test' * 1000)
 
 # ----
 
-Digest::SHA1.digest('test' * 1000).each_byte do |byte|
+Digest::SHA2.digest('test' * 1000).each_byte do |byte|
   print byte, "-"
 end
 
 # ----
 
 require 'base64'
-require 'digest/sha1'
+require 'digest'
 
-puts Digest::SHA1.hexdigest('test')
+puts Digest::SHA2.hexdigest('test')
 puts Base64.encode64(Digest::SHA1.digest('test'))
 
 # ----
@@ -385,7 +279,7 @@ require 'rubygems'
 require 'nokogiri'
 require 'open-uri'
 
-doc = Nokogiri::HTML(open('http://www.cnn.com/'))
+doc = Nokogiri::HTML(URI.open('https://www.apress.com/'))
 
 doc.css('p').each do |para|
   puts para.inner_text
@@ -398,7 +292,7 @@ require 'pp'
 # ----
 
 person1 = { :name => "Peter", :gender => :male }
-person2 = { :name => "Laura", :gender => :female }
+person2 = { :name => "Carleton", :gender => :male }
 people = [person1, person2, person1, person1, person1]
 puts people.inspect
 
@@ -546,7 +440,8 @@ f.pos = 0
 f.print "Y"
 f.pos = f.size - 1
 f.print "w"
-f.flush f.pos = 0
+f.flush
+f.pos = 0
 puts f.read
 f.close!
 
@@ -559,7 +454,9 @@ f = Tempfile.new('myapp', '/my/secret/temporary/directory')
 require 'tempfile'
 
 Tempfile.open('myapp') do |f|
-  f.puts "Hello" f.pos = 0 f.print "Y"
+  f.puts "Hello"
+  f.pos = 0
+  f.print "Y"
   f.pos = f.size - 1
   f.print "w"
   f.flush
@@ -570,21 +467,18 @@ end
 # ----
 
 require 'uri'
-puts URI.extract('Check out http://www.rubyinside.com/ or e-mail ➥
-mailto:me@privacy.net').inspect
+puts URI.extract('Check out https://www.apress.com/ or email mailto:me@apress.com').inspect
 
 # ----
 
 require 'uri'
-puts URI.extract('http://www.rubyinside.com/ and mailto:me@privacy.net', ➥
-['http']).inspect
+puts URI.extract('https://www.apress.com/ and mailto:me@apress.com', ['https']).inspect
 
 # ----
 
 require 'uri'
 
-email = %q{Some cool Ruby sites are http://www.ruby-lang.org/ and ➥
-http://www.rubyinside.com/ and http://redhanded.hobix.com/}
+email = %q{Some cool Ruby sites are https://www.ruby-lang.org/ and https://www.apress.com/ and https://www.w3.org/}
 
 URI.extract(email, ['http', 'https']) do |url|
   puts "Fetching URL #{url}"
@@ -593,12 +487,12 @@ end
 
 # ----
 
-URI.parse('http://www.rubyinside.com/')
+URI.parse('https://www.apress.com/')
 
 # ----
 
 require 'uri'
-a = URI.parse('http://www.rubyinside.com/')
+a = URI.parse('https://www.apress.com/')
 puts a.scheme
 puts a.host
 puts a.port
@@ -608,7 +502,7 @@ puts a.query
 # ----
 
 require 'uri'
-url = 'http://www.x.com:1234/test/1.html?x=y&y=z#top'
+url = 'https://www.x.com:1234/test/1.html?x=y&y=z#top'
 puts URI.parse(url).port
 puts URI.parse(url).path
 puts URI.parse(url).query
@@ -625,16 +519,16 @@ URI.split('http://www.x.com:1234/test/1.html?x=y&y=z#top')
 # ----
 
 require 'uri'
-u = URI::HTTP.build( :host => 'rubyinside.com', :path => '/' )
+u = URI::HTTP.build( host: 'apress.com', path: '/')
 puts u.to_s
 puts u.request_uri
 
 # ----
 
-ftp_url = URI::FTP.build( :userinfo => 'username:password',
-:host => 'ftp.example.com',
-:path => '/pub/folder',
-:typecode => 'a')
+ftp_url = URI::FTP.build( userinfo: 'username:password',
+                         host: 'ftp.example.com',
+                         path: '/pub/folder',
+                         typecode: 'a')
 
 puts ftp_url.to_s
 
@@ -660,7 +554,8 @@ puts "Compressed data is #{compressed_text.length} bytes long"
 
 require 'zlib'
 test_text = 'this is a test string' * 100
-puts "Original string is #{test_text.length} bytes long" compressed_text = Zlib::Deflate.deflate(test_text)
+puts "Original string is #{test_text.length} bytes long"
+compressed_text = Zlib::Deflate.deflate(test_text)
 puts "Compressed data is #{compressed_text.length} bytes long"
 uncompressed_text = Zlib::Inflate.inflate(compressed_text)
 puts "Uncompressed data is back to #{uncompressed_text.length} bytes in length"

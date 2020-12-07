@@ -100,14 +100,18 @@ puts "This is a test".vowels.join('-')
 # ----
 
 require 'net/http'
-Net::HTTP.get_print('www.rubyinside.com', '/')
+uri = URI('https://ruby-doc.org')
+http_request = Net::HTTP.new(uri.host, uri.port)
+http_request.use_ssl = true
+response = http_request.get('/')
+puts response.body.force_encoding("ISO-8859-1")
 
 # ----
 
 require 'net/http'
-url = URI.parse('http://www.rubyinside.com/')
-response = Net::HTTP.start(url.host, url.port) do |http|
-  http.get(url.path)
+url = URI.parse('https://ruby-doc.org/')
+response = Net::HTTP.start(url.host, url.port, use_ssl: true) do |http|
+ http.get(url.path)
 end
 content = response.body
 
@@ -153,13 +157,15 @@ puts Chronic.parse('may 10th')
 
 # source 'https://rubygems.org'
 # gem 'nokogiri'
-# gem 'rack', '~>1.1'
+# gem 'rack', '~>1.5'
 
 # ----
 
 require 'bundler/setup'
 require 'rack'
-# Now Rack 1.1 or above is loaded properly
-
+# Now Rack 1.5 or above is loaded properly and you can check by typing the
+following:
+Rack.version
+Rack.release
 # ----
 

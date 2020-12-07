@@ -100,11 +100,11 @@ end
 
 # ----
 
-data = File.read(“text.txt”)
+data = File.read("text.txt")
 
 # ----
 
-array_of_lines = File.readlines(“text.txt”)
+array_of_lines = File.readlines("text.txt")
 
 # ----
 
@@ -207,7 +207,7 @@ f.close
 f = File.open("text.txt", "r")
 while a = f.getc
     puts a.chr
-      f.seek(5, IO::SEEK_CUR)
+    f.seek(5, IO::SEEK_CUR)
 end
 
 # ----
@@ -223,7 +223,7 @@ puts t.sec
 
 # ----
 
-puts "It exists!" if File.exist?("file1.txt")
+puts "It exists!" if File.exist?("comic-books.txt")
 
 # ----
 
@@ -261,7 +261,13 @@ puts Dir.pwd
 
 # ----
 
+current = Dir.pwd
 Dir.chdir("/usr/bin")
+puts Dir.pwd
+
+# ----
+
+Dir.chdir(current)
 puts Dir.pwd
 
 # ----
@@ -294,7 +300,7 @@ Dir.delete("mynewdir")
 # ----
 
 require 'fileutils'
-FileUtils.rm_f(directory_name)
+FileUtils.rm_f(<directory_name>)
 
 # ----
 
@@ -662,7 +668,7 @@ end
 
 # ----
 
-person = Person.where(name: “Chris”).first
+person = Person.where(name: "Chris").first
 person.age = 50
 person.save
 

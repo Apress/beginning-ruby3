@@ -20,8 +20,8 @@ end
 # ----
 
 #= RDoc Example
+#= This is a 1st level heading
 #
-#== This is a heading
 #
 #* First item in an outer list
 # * First item in an inner list
@@ -29,9 +29,9 @@ end
 #* Second item in an outer list
 # * Only item in this inner list
 #
-#== This is a second heading
+#== This is a second level heading
 #
-#Visit www.rubyinside.com
+#Visit https://www.apress.com
 #
 #== Test of text formatting features
 #
@@ -44,7 +44,6 @@ end
 #     puts "test"
 #   end
 # end
-
 class MyClass
 end
 
@@ -163,9 +162,8 @@ end
 
 def generate_random_number_except_123
   x = rand(1000)
-  throw :finish if x == 123
+  throw :finish if x > 123 && x < 200
 end
-
 
 catch(:finish) do
   1000.times { generate_random_number_except_123 }
@@ -184,7 +182,24 @@ puts "i = #{i}, j = #{j}"
 
 # ----
 
-# ruby –r debug debugtest.rb
+# byebug debugtest.rb
+
+# ----
+
+require 'byebug'
+
+i = 1
+j = 0
+byebug
+until i > 1000000
+  i *= 2
+  j += 1
+end
+puts "i = #{i}, j = #{j}"
+
+# ----
+
+# ruby debugtest.rb
 
 # ----
 
@@ -240,7 +255,7 @@ class String
   end
 end
 
-require '/'
+require 'minitest/autorun'
 
 class TestTitleize < Minitest::Test
   def test_basic
@@ -249,7 +264,6 @@ class TestTitleize < Minitest::Test
     assert_equal("We're Testing", "We're testing".titleize)
   end
 end
-
 # ----
 
 assert_equal("Let's make a test fail!", "foo".titleize)
@@ -308,12 +322,14 @@ end
 # ----
 
 # place this into calculator.rb
-require 'profile'
+require 'ruby-prof'
+
 class Calculator
   def self.count_to_large_number
     x = 0
     100000.times { x += 1 }
   end
+
   def self.count_to_small_number
     x = 0
     1000.times { x += 1 }
