@@ -181,10 +181,6 @@ puts 10.class
 
 # ----
 
-# function1(function2(function3(something)))
-
-# ----
-
 # something.function3.function2.function1
 
 # ----
@@ -269,13 +265,12 @@ Hash.methods
 
 # ----
 
-class Fixnum
+class Integer
   alias_method :old_plus, :+
-
   def +(other_number)
     return 5 if self == 2 && other_number == 2
     old_plus other_number
-    end
+  end
 end
 
 puts 2 + 2
@@ -386,18 +381,6 @@ m[2]
 
 # ----
 
-(2 ** 24).class
-
-# ----
-
-(2 ** 30).class
-
-# ----
-
-2 ** 100
-
-# ----
-
 a = []
 a.push(10)
 a.push('test')
@@ -478,14 +461,14 @@ lines = File.readlines('/file/name/here')
 # ----
 
 require 'open-uri'
-open('http://www.rubyinside.com/').readlines
+URI.open('https://www.apress.com/').readlines
 
 # ----
 
 require 'net/http'
 
-Net::HTTP.start('www.rubyinside.com') do |http|
-  req = Net::HTTP::Get.new('/test.txt')
+Net::HTTP.start('www.apress.com', use_ssl: true) do |http|
+  req = Net::HTTP::Get.new('/sitemap.xml')
   puts http.request(req).body
 end
 
